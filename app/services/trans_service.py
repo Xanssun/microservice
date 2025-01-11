@@ -24,6 +24,20 @@ class TransService:
         await self.db_session.refresh(transaction)
 
         return transaction
+    
+    async def delete_trans(self):
+        result = await self.db_session.execute(select(Transaction))
+        all_transactions = result.scalars().all()
+
+        if not all_transactions:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail="No transactions found to delete")
+
+        for transaction in all_transactions:
+            await self.db_session.delete(transaction)
+
+        await self.db_session.commit()
+        
 
 def get_trans_service(
     db_session: AsyncSession = Depends(get_session),

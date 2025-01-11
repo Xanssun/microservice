@@ -4,7 +4,7 @@ from models.entities import Transaction
 from pydantic import BaseModel, Field
 
 
-class TransResponse(BaseModel):
+class CreateTransResponse(BaseModel):
     message: str
     # task_id: str
     id: UUID
