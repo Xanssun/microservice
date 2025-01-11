@@ -1,4 +1,4 @@
-# FastAPI + Postgres
+# TestWork73
 
 Простое приложение на fast-api для работы с транзакциями
 
