@@ -1,3 +1,5 @@
+
+
 from fastapi import Depends, HTTPException, status
 from infra.postgres import get_session
 from models.entities import Transaction
@@ -23,8 +25,10 @@ class TransService:
         await self.db_session.commit()
         await self.db_session.refresh(transaction)
 
+        # тут будет celery
+
         return transaction
-    
+            
     async def delete_trans(self):
         result = await self.db_session.execute(select(Transaction))
         all_transactions = result.scalars().all()

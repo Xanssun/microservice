@@ -1,17 +1,9 @@
-from uuid import UUID
-
-from models.entities import Transaction
 from pydantic import BaseModel, Field
 
 
 class CreateTransResponse(BaseModel):
+    task_id: str
     message: str
-    # task_id: str
-    id: UUID
-
-    @classmethod
-    def from_orm(cls, transaction: Transaction):
-        return cls(id=transaction.id, message="Transaction received")
 
 
 class TransactionCreate(BaseModel):

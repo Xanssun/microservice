@@ -4,6 +4,7 @@ LOGS = docker logs
 ENV = --env-file .env
 APP_FILE = docker_compose/app.yaml
 STORAGE_FILE = docker_compose/storage.yaml
+REDIS_FILE = docker_compose/redis.yaml
 APP_CONTAINER = main-app
 
 .PHONY: app
@@ -14,6 +15,10 @@ app:
 storage:
 	${DC} -f ${STORAGE_FILE} ${ENV} up --build -d
 
+.PHONY: REDIS
+redis:
+	${DC} -f ${REDIS_FILE} ${ENV} up --build -d
+
 .PHONY: app-down
 app-down:
 	${DC} -f ${APP_FILE} down
@@ -21,6 +26,10 @@ app-down:
 .PHONY: storage-down
 storage-down:
 	${DC} -f ${STORAGE_FILE} down
+
+.PHONY: redis-down
+redis-down:
+	${DC} -f ${REDIS_FILE} down
 
 .PHONY: app-shell
 app-shell:
@@ -33,4 +42,4 @@ app-logs:
 
 .PHONY: all
 all:
-	${DC} -f ${STORAGE_FILE} -f ${APP_FILE} ${ENV} up --build -d
+	${DC} -f ${REDIS_FILE} -f ${STORAGE_FILE} -f ${APP_FILE} ${ENV} up --build -d

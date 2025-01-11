@@ -1,3 +1,5 @@
+import uuid
+
 from fastapi import APIRouter, Depends, status
 from schemas.entities import CreateTransResponse, TransactionCreate
 from services.trans_service import TransService, get_trans_service
@@ -22,8 +24,12 @@ async def create_transactions(
     trans_service: TransService = Depends(get_trans_service),
     
 ):
+    task_id = str(uuid.uuid4())
     transaction = await trans_service.create_trans(trans_create)
-    return CreateTransResponse.from_orm(transaction)
+    return CreateTransResponse(
+        task_id=task_id,
+        message="Transaction received"
+    )
 
 @router.delete(
     "/transactions",

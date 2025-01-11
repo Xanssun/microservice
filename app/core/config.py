@@ -11,5 +11,8 @@ class Config(BaseSettings):
     db_name: str = Field(default='db_name', alias='DB_NAME')
     db_port: int = Field(default=5432, alias='DB_PORT')
 
+    redis_host: str = Field(default='localhost', alias='REDIS_HOST')
+    redis_port: int = Field(default=6379, alias='REDIS_PORT')
+
 
 settings = Config()
