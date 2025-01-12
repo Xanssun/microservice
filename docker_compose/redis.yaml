@@ -5,7 +5,7 @@ services:
       context: ..
       dockerfile: Dockerfile
     container_name: celery-worker
-    command: celery -A services.tasks worker --loglevel=info
+    command: celery -A infra.celery worker --loglevel=info
     env_file:
       - ../.env
     volumes:

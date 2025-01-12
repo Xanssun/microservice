@@ -18,6 +18,8 @@ redis = "^5.2.1"
 celery = {extras = ["asyncio"], version = "^5.4.0"}
 asyncio = "^3.4.3"
 gevent = "^24.11.1"
+eventlet = "^0.38.2"
+asgiref = "^3.8.1"
 
 
 [build-system]
