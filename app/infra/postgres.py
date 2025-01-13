@@ -35,3 +35,7 @@ def get_sync_session():
     """Генератор для получения синхронной сессии."""
     with sync_session() as session:
         yield session
+
+def get_db_session():
+    """Фабрика для получения синхронной сессии."""
+    return next(get_sync_session())

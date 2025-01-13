@@ -15,7 +15,7 @@ app:
 storage:
 	${DC} -f ${STORAGE_FILE} ${ENV} up --build -d
 
-.PHONY: REDIS
+.PHONY: redis
 redis:
 	${DC} -f ${REDIS_FILE} ${ENV} up --build -d
 

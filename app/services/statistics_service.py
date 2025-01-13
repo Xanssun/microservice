@@ -44,10 +44,10 @@ class StatisticsService:
         
         top_transactions.sort(key=lambda x: x.amount, reverse=True)
         
-        return top_transactions
+        return top_transactions[:3]
 
 
-def get_trans_service(
+def get_statistics_service(
     db_session: Session = Depends(get_sync_session),
 ):
     return StatisticsService(db_session=db_session)

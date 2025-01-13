@@ -27,7 +27,7 @@ class BaseTransaction(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class TransactionStatistics(BaseModel):
+class TransactionStatisticsSchemas(BaseModel):
     total_transactions: int = 0
     average_transaction_amount: float = 0.0
     top_transactions: list[BaseTransaction] = []

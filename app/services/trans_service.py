@@ -2,7 +2,7 @@ import json
 
 from fastapi import Depends, HTTPException, status
 from infra.postgres import get_session
-from infra.redis.redis import RedisCacheStorage, get_redis_client
+from infra.redis.redis import AsyncRedisCacheStorage, get_async_redis_client
 from models.entities import Transaction
 from schemas.entities import TransactionCreate, TransactionStatisticsResponse
 from services.tasks import manage_statistics
@@ -11,7 +11,7 @@ from sqlalchemy.future import select
 
 
 class TransService:
-    def __init__(self, db_session: AsyncSession, cache: RedisCacheStorage):
+    def __init__(self, db_session: AsyncSession, cache: AsyncRedisCacheStorage):
         self.db_session = db_session
         self.cache = cache
 
@@ -44,11 +44,15 @@ class TransService:
             await self.db_session.delete(transaction)
 
         await self.db_session.commit()
-        await self.cache.as_delete('statistics')
+        await self.cache.delete('statistics')
 
     async def get_statistics(self) -> TransactionStatisticsResponse:
-        stats = await self.cache.as_get('statistics')
-        print(stats)
+        stats = await self.cache.get('statistics')
+
+        if not stats:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail="No statistics available")
+
         if stats:
             return TransactionStatisticsResponse(**json.loads(stats))
         return TransactionStatisticsResponse()
@@ -56,6 +60,6 @@ class TransService:
 
 def get_trans_service(
     db_session: AsyncSession = Depends(get_session),
-    cache: RedisCacheStorage = Depends(get_redis_client),
+    cache: AsyncRedisCacheStorage = Depends(get_async_redis_client),
 ):
     return TransService(db_session=db_session, cache=cache)
