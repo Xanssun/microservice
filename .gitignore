@@ -169,14 +169,3 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-
-
-# Игнорировать файлы миграций Alembic
-app/migrations/versions/*
-
-# Оставить конфигурационные файлы Alembic
-!app/migrations/env.py
-!app/migrations/script.py.mako
-
-# Оставить пустую папку versions
-!app/migrations/versions/.gitkeep

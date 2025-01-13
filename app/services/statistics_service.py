@@ -4,6 +4,7 @@ from fastapi import Depends
 from infra.postgres import get_sync_session
 from models.entities import Transaction as DBTransaction
 from schemas.entities import BaseTransaction
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 
@@ -16,17 +17,19 @@ class StatisticsService:
         return total_transactions
 
     def get_average_transaction_amount(self) -> float:
-        total_sum = 0.0
-        total_count = 0
+        result = self.db_session.query(
+            func.sum(DBTransaction.amount).label('total_sum'),
+            func.count(DBTransaction.id).label('total_count')
+        ).one()
 
-        for transaction in self.db_session.query(DBTransaction).all():
-            total_sum += transaction.amount
-            total_count += 1
+        total_sum = result.total_sum or 0.0
+        total_count = result.total_count or 0
 
         if total_count == 0:
             return 0.0
-        
-        return total_sum / total_count
+
+        avg = total_sum / total_count
+        return round(avg, 2)
 
     def get_top_transactions(self) -> list[BaseTransaction]:
         
