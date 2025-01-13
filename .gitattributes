@@ -1,0 +1,13 @@
+# Устанавливаем переносы строк для всех файлов
+* text=auto
+
+# Скрипты всегда с LF
+*.sh text eol=lf
+
+# Конфигурационные файлы с LF
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+
+# Markdown файлы с LF
+*.md text eol=lf
